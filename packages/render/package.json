@@ -93,6 +93,12 @@
       }
     }
   },
+  "imports": {
+    "#load-prettier": {
+      "react-email-no-prettier": "./dist/prettier/load-prettier.stub.mjs",
+      "default": "./dist/prettier/load-prettier.mjs"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "build": "tsdown",

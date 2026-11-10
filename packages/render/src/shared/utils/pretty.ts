@@ -118,12 +118,9 @@ function createModifiedHtmlPlugin(html: Plugin): Plugin {
 }
 
 const importPrettier = async () => {
-  const [{ format }, html] = await Promise.all([
-    import('prettier/standalone'),
-    import('prettier/plugins/html'),
-  ]);
+  const { format, html } = await import('#load-prettier');
 
-  return { format, html: createModifiedHtmlPlugin(html as Plugin) };
+  return { format, html: createModifiedHtmlPlugin(html as unknown as Plugin) };
 };
 
 /**
@@ -141,7 +138,10 @@ const defaults: Options = {
   parser: 'html',
 };
 
-export const pretty = async (str: string, options: Options = {}) => {
+export const pretty = async (
+  str: string,
+  options: Options = {},
+): Promise<string> => {
   prettierPromise ??= importPrettier();
   const { format, html } = await prettierPromise;
 
