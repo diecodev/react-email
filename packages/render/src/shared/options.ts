@@ -5,6 +5,8 @@ import type { unstableToPlainText } from './utils/unstable-to-plain-text';
 
 export type Options = {
   /**
+   * @deprecated Use `pretty(await render(element))` instead. This option keeps
+   * Prettier in every bundle that imports `render`, even when it's never used.
    * @see {@link pretty}
    */
   pretty?: boolean;
