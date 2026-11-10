@@ -148,6 +148,52 @@ The plain-text output will be:
 This content appears in both outputs.
 ```
 
+## Reducing bundle size
+
+`render` only loads Prettier when you use `pretty`, but bundlers still include it in your output because they can't know at build time whether `pretty` will be used. This adds about 290 KB (83 KB gzipped).
+
+If you never format the HTML, for example in a Cloudflare Worker where the bundle size counts towards your limits, you can alias Prettier to an empty module:
+
+```js prettier-stub.js
+export const format = () => {
+  throw new Error('Prettier was removed from this bundle');
+};
+
+export default {};
+```
+
+<CodeGroup>
+
+```ts vite.config.ts
+import { defineConfig } from 'vite';
+
+const stub = new URL('./prettier-stub.js', import.meta.url).pathname;
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      'prettier/standalone': stub,
+      'prettier/plugins/html': stub,
+    },
+  },
+});
+```
+
+```jsonc wrangler.jsonc
+{
+  "alias": {
+    "prettier/standalone": "./prettier-stub.js",
+    "prettier/plugins/html": "./prettier-stub.js"
+  }
+}
+```
+
+</CodeGroup>
+
+<Warning>
+  With this alias in place, both `pretty` and the `pretty` option of `render` throw an error.
+</Warning>
+
 ## Options
 
 <ResponseField name="pretty" type="boolean">
