@@ -3,12 +3,7 @@ import type { pretty } from './utils/pretty';
 import type { toPlainText } from './utils/to-plain-text';
 import type { unstableToPlainText } from './utils/unstable-to-plain-text';
 
-export type Options = {
-  /**
-   * @see {@link pretty}
-   */
-  pretty?: boolean;
-} & (
+export type CoreOptions =
   | {
       /**
        * @see {@link toPlainText}
@@ -38,5 +33,11 @@ export type Options = {
        * @see {@link unstableToPlainText}
        */
       unstableTextConversion: true;
-    }
-);
+    };
+
+export type Options = {
+  /**
+   * @see {@link pretty}
+   */
+  pretty?: boolean;
+} & CoreOptions;

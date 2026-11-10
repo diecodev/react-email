@@ -91,6 +91,88 @@
           "default": "./dist/node/index.cjs"
         }
       }
+    },
+    "./core": {
+      "workerd": {
+        "import": {
+          "types": "./dist/edge/core.d.mts",
+          "default": "./dist/edge/core.mjs"
+        },
+        "require": {
+          "types": "./dist/edge/core.d.cts",
+          "default": "./dist/edge/core.cjs"
+        }
+      },
+      "deno": {
+        "import": {
+          "types": "./dist/browser/core.d.mts",
+          "default": "./dist/browser/core.mjs"
+        },
+        "require": {
+          "types": "./dist/browser/core.d.cts",
+          "default": "./dist/browser/core.cjs"
+        }
+      },
+      "worker": {
+        "import": {
+          "types": "./dist/browser/core.d.mts",
+          "default": "./dist/browser/core.mjs"
+        },
+        "require": {
+          "types": "./dist/browser/core.d.cts",
+          "default": "./dist/browser/core.cjs"
+        }
+      },
+      "edge-light": {
+        "import": {
+          "types": "./dist/edge/core.d.mts",
+          "default": "./dist/edge/core.mjs"
+        },
+        "require": {
+          "types": "./dist/edge/core.d.cts",
+          "default": "./dist/edge/core.cjs"
+        }
+      },
+      "node": {
+        "import": {
+          "types": "./dist/node/core.d.mts",
+          "default": "./dist/node/core.mjs"
+        },
+        "require": {
+          "types": "./dist/node/core.d.cts",
+          "default": "./dist/node/core.cjs"
+        }
+      },
+      "convex": {
+        "import": {
+          "types": "./dist/edge/core.d.mts",
+          "default": "./dist/edge/core.mjs"
+        },
+        "require": {
+          "types": "./dist/edge/core.d.cts",
+          "default": "./dist/edge/core.cjs"
+        }
+      },
+      "browser": {
+        "import": {
+          "types": "./dist/browser/core.d.mts",
+          "default": "./dist/browser/core.mjs"
+        },
+        "require": {
+          "types": "./dist/browser/core.d.cts",
+          "default": "./dist/browser/core.cjs"
+        }
+      },
+      "default": {
+        "import": {
+          "types": "./dist/node/core.d.mts",
+          "default": "./dist/node/core.mjs"
+        },
+        "require": {
+          "types": "./dist/node/core.d.cts",
+          "default": "./dist/node/core.cjs"
+        }
+      }
     }
   },
   "license": "MIT",

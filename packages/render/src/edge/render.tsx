@@ -1,61 +1,16 @@
-import { Suspense } from 'react';
-import { pretty } from '../node';
-import { createErrorBoundary } from '../shared/error-boundary';
 import type { Options } from '../shared/options';
-import { readStream } from '../shared/read-stream.browser';
-import { stripImagePreloadLinks } from '../shared/utils/strip-image-preload-links';
-import { toPlainText } from '../shared/utils/to-plain-text';
-import { unstableToPlainText } from '../shared/utils/unstable-to-plain-text';
-import { importReactDom } from './import-react-dom';
+import { pretty } from '../shared/utils/pretty';
+import { render as renderCore } from './render-core';
 
 export const render = async (
   element: React.ReactElement,
   options?: Options,
 ) => {
-  const reactDOMServer = await importReactDom().then((m) => {
-    if ('default' in m) {
-      return m.default;
-    }
+  const result = await renderCore(element, options);
 
-    return m;
-  });
-
-  const html = await new Promise<string>((resolve, reject) => {
-    const ErrorBoundary = createErrorBoundary(reject);
-    reactDOMServer
-      .renderToReadableStream(
-        <ErrorBoundary>
-          <Suspense>{element}</Suspense>
-        </ErrorBoundary>,
-        {
-          onError(error: unknown) {
-            reject(error);
-          },
-          progressiveChunkSize: Number.POSITIVE_INFINITY,
-        },
-      )
-      .then(async (stream) => {
-        await stream.allReady;
-        return readStream(stream);
-      })
-      .then((result) => resolve(stripImagePreloadLinks(result)))
-      .catch(reject);
-  });
-
-  if (options?.plainText) {
-    return options.unstableTextConversion
-      ? unstableToPlainText(html)
-      : toPlainText(html, options.htmlToTextOptions);
+  if (options?.pretty && !options.plainText) {
+    return pretty(result);
   }
 
-  const doctype =
-    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-
-  const document = `${doctype}${html.replace(/<!DOCTYPE.*?>/, '')}`;
-
-  if (options?.pretty) {
-    return pretty(document);
-  }
-
-  return document;
+  return result;
 };
